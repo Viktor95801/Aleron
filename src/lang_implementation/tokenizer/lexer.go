@@ -353,7 +353,7 @@ func (l *Lexer) nextTok() Tok {
 			switch l.peek() {
 			case '=':
 				l.updatePos(c)
-				tok = l.newTok(INFER_TYPE, ":=")
+				tok = l.newTok(INFER_ASSIGN, ":=")
 			default:
 				tok = l.newTok(COLON, ":")
 			}

@@ -25,7 +25,6 @@ const (
 	INVALID = iota
 	EOF
 	COMMENT
-	INFER_TYPE
 
 	//======================================================================
 	// Literals
@@ -72,6 +71,7 @@ const (
 	//======================================================================
 	ASSIGN
 
+	INFER_ASSIGN
 	PLUS_ASSIGN
 	MINUS_ASSIGN
 	STAR_ASSIGN
@@ -255,8 +255,8 @@ func (t Tok) String() string {
 		return "INVALID"
 	case EOF:
 		return "EOF"
-	case INFER_TYPE:
-		return "INFER_TYPE"
+	case INFER_ASSIGN:
+		return "INFER_ASSIGN"
 
 	case EQUAL:
 		return "EQUAL"
