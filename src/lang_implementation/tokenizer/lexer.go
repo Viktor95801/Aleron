@@ -96,6 +96,7 @@ func (l *Lexer) handleComment(c byte, multiLine bool) Tok {
 		}
 		buf.WriteString("*/")
 		tok = l.newTok(COMMENT, buf.String())
+		l.updatePos(c)
 	}
 	return tok
 }
@@ -112,6 +113,11 @@ func (l *Lexer) handleIdent(c byte) Tok {
 	keyword, ok := Keywords[buf.String()]
 	if ok {
 		return l.newTok(keyword, buf.String())
+	}
+
+	primitiveType, ok := Types[buf.String()]
+	if ok {
+		return l.newTok(primitiveType, buf.String())
 	}
 
 	return l.newTok(IDENT, buf.String())
@@ -201,10 +207,8 @@ func (l *Lexer) nextTok() Tok {
 	if c == '/' && (l.peek() == '*' || l.peek() == '/') {
 		if l.peek() == '*' {
 			tok = l.handleComment(c, true)
-			l.updatePos(c)
 		} else if l.peek() == '/' {
 			tok = l.handleComment(c, false)
-			l.updatePos(c)
 		}
 	} else if c == '"' || c == '\'' {
 		tok = l.handleString(c)

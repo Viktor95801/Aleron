@@ -70,8 +70,8 @@ const (
 	// Assignment Operators
 	//======================================================================
 	ASSIGN
-
 	INFER_ASSIGN
+
 	PLUS_ASSIGN
 	MINUS_ASSIGN
 	STAR_ASSIGN
@@ -103,8 +103,10 @@ const (
 	//======================================================================
 
 	// Modules
+	PACKAGE
 	IMPORT
 	EXPORT
+	AS
 
 	// Declarations
 	LET
@@ -114,15 +116,20 @@ const (
 	FUNC
 	RETURN // technically not a declaration, but it fits
 
+	PROC
+
 	// Statements
 	IF
 	MATCH
 	CASE
 	ELSE
+	DEFER
 
 	FOR
 	BREAK
 	CONTINUE
+
+	WITH
 
 	// Making types
 	TYPE
@@ -152,14 +159,22 @@ const (
 	STRING_T
 
 	BOOLEAN_T
+	// not a type, but it fits
+	TRUE
+	FALSE
+
+	FUNCTION_T
+	PROCEDURE_T
 )
 
 // ======================================================================
 // Keyword lookup
 // ======================================================================
 var Keywords = map[string]TokType{
-	"import": IMPORT,
-	"export": EXPORT,
+	"package": PACKAGE,
+	"import":  IMPORT,
+	"export":  EXPORT,
+	"as":      AS,
 
 	"let":   LET,
 	"const": CONST,
@@ -168,19 +183,27 @@ var Keywords = map[string]TokType{
 	"func":   FUNC,
 	"return": RETURN,
 
+	"proc": PROC,
+
 	"if":    IF,
 	"match": MATCH,
 	"case":  CASE,
 	"else":  ELSE,
+	"defer": DEFER,
 
 	"for":      FOR,
 	"break":    BREAK,
 	"continue": CONTINUE,
 
+	"with": WITH,
+
 	"type":   TYPE,
 	"struct": STRUCT,
 	"enum":   ENUM,
 	"union":  UNION,
+
+	"true":  TRUE,
+	"false": FALSE,
 }
 
 //======================================================================
@@ -224,6 +247,9 @@ var Types = map[string]TokType{
 	"u64": UINT64_T,
 	"f32": FLOAT32_T,
 	"f64": FLOAT64_T,
+
+	"function":  FUNCTION_T,
+	"procedure": PROCEDURE_T,
 }
 
 //======================================================================
@@ -345,10 +371,14 @@ func (t Tok) String() string {
 	case DOT:
 		return "DOT"
 
+	case PACKAGE:
+		return "PACKAGE"
 	case IMPORT:
 		return "IMPORT"
 	case EXPORT:
 		return "EXPORT"
+	case AS:
+		return "AS"
 
 	case LET:
 		return "LET"
@@ -361,6 +391,9 @@ func (t Tok) String() string {
 		return "FUNC"
 	case RETURN:
 		return "RETURN"
+
+	case PROC:
+		return "PROC"
 
 	case IF:
 		return "IF"
@@ -377,6 +410,9 @@ func (t Tok) String() string {
 		return "BREAK"
 	case CONTINUE:
 		return "CONTINUE"
+
+	case WITH:
+		return "WITH"
 
 	case TYPE:
 		return "TYPE"
@@ -422,6 +458,16 @@ func (t Tok) String() string {
 
 	case BOOLEAN_T:
 		return "BOOLEAN_T"
+
+	case TRUE:
+		return "TRUE"
+	case FALSE:
+		return "FALSE"
+
+	case FUNCTION_T:
+		return "FUNCTION_T"
+	case PROCEDURE_T:
+		return "PROCEDURE_T"
 
 	default:
 		return "UNKNOWN"

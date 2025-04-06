@@ -1,21 +1,14 @@
-import Al.core.fmt
-// this is a comment
-// a
-const main := func() {
-    fmt.Println("Hello, world!")
+package main
+
+import Al.core.fmt as fmt
+
+main := proc() {
+    fmt.Println("Hello World!")
+
+    fmt.Println(f"2 + 3.1415 = {add(2, 3.1415)}")
+    
 }
-/* comment */
-/* other
 
-comment */
-123
-123.123
-123.123
-.123
-
-let x := 123
-let y := 123.123
-
-let z := x + y
-
-123 + 3 * 9 - (1083 * 234/2) 
+add := func(a, b: int) int {
+    return a + b
+}
